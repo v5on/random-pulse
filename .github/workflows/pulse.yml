@@ -1,0 +1,23 @@
+name: 🔁 Random Pulse Generator
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'  # প্রতি ১০ মিনিটে trigger
+  workflow_dispatch:
+
+jobs:
+  run-pulse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - run: python pulse.py
+      - name: Push updated JSON
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add data/latest.json
+          git commit -m "🔢 Update random number"
+          git push
