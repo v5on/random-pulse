@@ -1,6 +1,10 @@
 # pulse.py
 import random, json
 from datetime import datetime
+import os
+
+# Ensure 'data' folder exists
+os.makedirs("data", exist_ok=True)
 
 data = {
     "number": random.randint(1000, 9999),
