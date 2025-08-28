@@ -3,7 +3,7 @@ name: 🔁 Random Pulse Generator
 on:
   schedule:
     - cron: '*/10 * * * *'  # প্রতি ১০ মিনিটে trigger
-  workflow_dispatch:
+  workflow_dispatch:         # Manual trigger option
 
 jobs:
   run-pulse:
@@ -19,12 +19,14 @@ jobs:
           python-version: '3.11'
 
       - name: 🔢 র‍্যান্ডম সংখ্যা তৈরি করো
-        run: python pulse.py
+        run: |
+          mkdir -p data
+          python pulse.py
 
       - name: 🔄 JSON ফাইল push করো
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
+          git config user.name "johirryhan091 bot"
+          git config user.email "johirryhan091@gmail.com"
           git add data/latest.json
           git commit -m "🔢 Update random number"
-          git push
+          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/v5on/random-pulse.git main
