@@ -8,13 +8,20 @@ on:
 jobs:
   run-pulse:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - name: 🔃 কোড ক্লোন করো
+        uses: actions/checkout@v3
+
+      - name: 🐍 Python সেটআপ করো
+        uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-      - run: python pulse.py
-      - name: Push updated JSON
+
+      - name: 🔢 র‍্যান্ডম সংখ্যা তৈরি করো
+        run: python pulse.py
+
+      - name: 🔄 JSON ফাইল push করো
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
