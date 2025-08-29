@@ -2,25 +2,61 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <title>র‍্যান্ডম পালস</title>
+  <title>প্রতি ১০ মিনিটে নতুন সংখ্যা</title>
   <style>
-    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
-    #number { font-size: 48px; color: #0077cc; }
-    #time { font-size: 18px; color: #555; }
-  </style>
-  <script>
-    async function loadData() {
-      const res = await fetch('data/latest.json');
-      const data = await res.json();
-      document.getElementById('number').textContent = data.number;
-      document.getElementById('time').textContent = `শেষ আপডেট: ${data.timestamp}`;
+    body {
+      font-family: "Noto Sans Bengali", sans-serif;
+      text-align: center;
+      background: #f9fafb;
+      padding: 50px;
     }
-    loadData();
-  </script>
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    .number {
+      font-size: 4rem;
+      font-weight: bold;
+      color: #2563eb;
+    }
+    .time {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: #374151;
+    }
+  </style>
 </head>
 <body>
   <h1>প্রতি ১০ মিনিটে নতুন সংখ্যা</h1>
-  <div id="number">--</div>
-  <div id="time">শেষ আপডেট: --</div>
+  <div class="number" id="number">লোড হচ্ছে...</div>
+  <div class="time" id="time"></div>
+
+  <script>
+    async function fetchData() {
+      try {
+        const response = await fetch("data/latest.json?nocache=" + new Date().getTime());
+        const data = await response.json();
+
+        document.getElementById("number").textContent = data.number;
+
+        // ✅ টাইম বাংলায় রূপান্তর
+        const date = new Date(data.timestamp.replace(" ", "T"));
+        const options = { 
+          year: "numeric", month: "long", day: "numeric",
+          hour: "numeric", minute: "numeric", second: "numeric",
+          hour12: true 
+        };
+        document.getElementById("time").textContent = 
+          "সময়: " + date.toLocaleString("bn-BD", options);
+
+      } catch (error) {
+        document.getElementById("number").textContent = "ত্রুটি!";
+        console.error(error);
+      }
+    }
+
+    fetchData();
+    setInterval(fetchData, 60000); // প্রতি মিনিটে আপডেট চেক
+  </script>
 </body>
 </html>
