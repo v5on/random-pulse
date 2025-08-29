@@ -29,11 +29,12 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
-      - name: পরিবর্তন যোগ ও পুশ
+            - name: পরিবর্তন যোগ ও পুশ
         run: |
           git add data/latest.json
           git commit -m "🔢 Update random number" || echo "কোন পরিবর্তন নেই"
-          git push
+          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git HEAD:main
+
         env:
           GIT_TOKEN: ${{ secrets.GH_PAT }}
           GIT_AUTHOR_NAME: GitHub Actions
